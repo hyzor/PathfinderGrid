@@ -1,8 +1,8 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This README contains information about the project and how you can set up your environment to be able to compile it!
 
-### What is this repository for? ###
+### What is this project for? ###
 
 A* pathfinding implementation in C++ made for Paradox Interactive.
 
