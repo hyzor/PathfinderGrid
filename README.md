@@ -4,7 +4,7 @@ This README would normally document whatever steps are necessary to get your app
 
 ### What is this repository for? ###
 
-A* pathfinding implementation in C++ made for a job interview.
+A* pathfinding implementation in C++ made for Paradox Interactive.
 
 ### How do I get set up? ###
 
