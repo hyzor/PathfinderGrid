@@ -24,7 +24,7 @@ int Pathfinder::FindPath(const int nStartX, const int nStartY, const int nTarget
 		Util::Point(0, -1) };
 
 	// Keep track of current node and child
-	Node* curNode;
+	Node* curNode = nullptr;
 	//Node* curChild;
 
 	// Keep track of open and closed nodes

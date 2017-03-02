@@ -21,6 +21,7 @@ int main(int argc, char** argv)
 	Pathfinder* pathfinder = new Pathfinder();
 
 	const int bufferSize = 12;
+	const int bufferSize2 = 12;
 
 	// Example 1
 	const unsigned char pMap[] = { 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1 };
@@ -38,8 +39,8 @@ int main(int argc, char** argv)
 
 	// Example 2
 	const unsigned char pMap2[] = { 0, 0, 1, 0, 1, 1, 1, 0, 1 };
-	int pOutBuffer2[7];
-	output = pathfinder->FindPath(2, 0, 0, 2, pMap2, 3, 3, pOutBuffer2, 7);
+	int pOutBuffer2[bufferSize2];
+	output = pathfinder->FindPath(2, 0, 0, 2, pMap2, 3, 3, pOutBuffer2, bufferSize2);
 
 	// Assert expected output value
 	assert(output == -1);
