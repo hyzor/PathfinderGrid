@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 	bool arrayIsValid = Util::VerifyArray(pOutBuffer, expected);
 	assert(arrayIsValid == true);
 
-	for (unsigned int i = 0; i < output - 1; ++i)
+	for (int i = 0; i < output - 1; ++i)
 	{
 		std::cout << pOutBuffer[i] << ", ";
 	}
