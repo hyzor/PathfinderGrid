@@ -16,12 +16,14 @@
 
 int main(int argc, char** argv)
 {
-	std::cout << "Starting grid pathfinding..." << std::endl;
+	std::cout << "Starting grid pathfinding..." << std::endl << std::endl;
 
 	Pathfinder* pathfinder = new Pathfinder();
 
 	const int bufferSize = 12;
 	const int bufferSize2 = 12;
+
+	std::cout << "Executing first example..." << std::endl;
 
 	// Example 1
 	const unsigned char pMap[] = { 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1 };
@@ -32,10 +34,19 @@ int main(int argc, char** argv)
 	// Assert expected output value
 	assert(output == 3);
 
+	for (unsigned int i = 0; i < output - 1; ++i)
+	{
+		std::cout << pOutBuffer[i] << ", ";
+	}
+
+	std::cout << pOutBuffer[output - 1] << std::endl << std::endl;
+
 	// Assert expected output array
 	const int expected[] = { 1, 5, 9 };
 	bool arrayIsValid = Util::VerifyArray(pOutBuffer, expected);
 	assert(arrayIsValid == true);
+
+	std::cout << "Executing second example..." << std::endl;
 
 	// Example 2
 	const unsigned char pMap2[] = { 0, 0, 1, 0, 1, 1, 1, 0, 1 };
@@ -45,10 +56,12 @@ int main(int argc, char** argv)
 	// Assert expected output value
 	assert(output == -1);
 
+	std::cout << std::endl;
+
 	// Clean up
 	delete pathfinder;
 
-	std::cout << "Pathfinding executed as expected! Press enter to exit." << std::endl;
+	std::cout << "Pathfinding examples executed as expected! Press enter to exit." << std::endl;
 
 	std::cin.get();
 
