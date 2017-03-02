@@ -34,17 +34,17 @@ int main(int argc, char** argv)
 	// Assert expected output value
 	assert(output == 3);
 
+	// Assert expected output array
+	const int expected[] = { 1, 5, 9 };
+	bool arrayIsValid = Util::VerifyArray(pOutBuffer, expected);
+	assert(arrayIsValid == true);
+
 	for (unsigned int i = 0; i < output - 1; ++i)
 	{
 		std::cout << pOutBuffer[i] << ", ";
 	}
 
 	std::cout << pOutBuffer[output - 1] << std::endl << std::endl;
-
-	// Assert expected output array
-	const int expected[] = { 1, 5, 9 };
-	bool arrayIsValid = Util::VerifyArray(pOutBuffer, expected);
-	assert(arrayIsValid == true);
 
 	std::cout << "Executing second example..." << std::endl;
 
