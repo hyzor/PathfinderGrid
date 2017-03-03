@@ -8,8 +8,8 @@ Pathfinder::~Pathfinder()
 {
 }
 
-int Pathfinder::FindPath(const int nStartX, const int nStartY, const int nTargetX, const int nTargetY,
-	const unsigned char* pMap, const int nMapWidth, const int nMapHeight, int* pOutBuffer, const int nOutBufferSize)
+int FindPath(int nStartX, int nStartY, int nTargetX, int nTargetY,
+	unsigned char const* pMap, int nMapWidth, int nMapHeight, int* pOutBuffer, int nOutBufferSize)
 {
 	// Wrap start and target positions into nodes
 	Node* startNode = new Node(Util::Point(nStartX, nStartY), pMap[Util::CoordinatesToIndex(nStartX, nStartY, nMapWidth)]);
@@ -17,6 +17,7 @@ int Pathfinder::FindPath(const int nStartX, const int nStartY, const int nTarget
 
 	const int numDirections = 4;
 
+	// Left, right, up, down (skip diagonals)
 	Util::Point directions[numDirections] = {
 		Util::Point(-1, 0),
 		Util::Point(1, 0),
@@ -25,13 +26,13 @@ int Pathfinder::FindPath(const int nStartX, const int nStartY, const int nTarget
 
 	// Keep track of current node and child
 	Node* curNode = nullptr;
-	//Node* curChild;
 
 	// Keep track of open and closed nodes
 	std::list<Node*> openList;
 	std::list<Node*> closedList;
 	std::list<Node*>::iterator it;
 
+	// Start by opening the start node
 	openList.push_back(startNode);
 	startNode->Open();
 
@@ -63,7 +64,7 @@ int Pathfinder::FindPath(const int nStartX, const int nStartY, const int nTarget
 		closedList.push_back(curNode);
 		curNode->Close();
 
-		unsigned int totalCost = CalcTotalCost(curNode->GetGScore());
+		unsigned int totalCost = Pathfinder::CalcTotalCost(curNode->GetGScore());
 
 		// Get neighboring nodes (4 assumed--diagonal excluded)
 		for (unsigned int i = 0; i < numDirections; ++i)
@@ -83,10 +84,10 @@ int Pathfinder::FindPath(const int nStartX, const int nStartY, const int nTarget
 				continue;
 
 			// Is this point already in the closed list?
-			if (FindNodeOnList(closedList, point))
+			if (Pathfinder::FindNodeOnList(closedList, point))
 				continue;
 
-			Node* child = FindNodeOnList(openList, point);
+			Node* child = Pathfinder::FindNodeOnList(openList, point);
 
 			// Node was not found in the open list--add it
 			if (child == nullptr)
@@ -99,7 +100,7 @@ int Pathfinder::FindPath(const int nStartX, const int nStartY, const int nTarget
 				child->SetGScore(totalCost);
 
 				// Calculate heuristic score based on the Manhattan distance
-				child->SetHScore(ManhattanDistance(child->GetCoordinates(), targetNode->GetCoordinates()));
+				child->SetHScore(Pathfinder::ManhattanDistance(child->GetCoordinates(), targetNode->GetCoordinates()));
 
 				// Now push it back to the open list
 				child->Open();
@@ -120,7 +121,7 @@ int Pathfinder::FindPath(const int nStartX, const int nStartY, const int nTarget
 
 	// If target was actually reached, we output the path and its length
 	if (targetReached)
-		pathLength = OutputPath(pOutBuffer, curNode, pMap, nMapWidth, nOutBufferSize);
+		pathLength = Pathfinder::OutputPath(pOutBuffer, curNode, startNode, pMap, nMapWidth, nOutBufferSize);
 
 	// Clean up
 	for (it = openList.begin(); it != openList.end();)
@@ -164,10 +165,10 @@ unsigned int Pathfinder::ManhattanDistance(Util::Point src, Util::Point target)
 
 Util::Point Pathfinder::CalcDelta(Util::Point src, Util::Point target)
 {
-	return Util::Point(std::abs(src.x - target.x), std::abs(src.y - target.y));
+	return Util::Point(abs(src.x - target.x), abs(src.y - target.y));
 }
 
-unsigned int Pathfinder::OutputPath(int* pOutBuffer, Node* curNode, const unsigned char* pMap, const int nMapWidth, const int nOutBufferSize)
+int Pathfinder::OutputPath(int* pOutBuffer, Node* curNode, Node* startNode, const unsigned char* pMap, const int nMapWidth, const int nOutBufferSize)
 {
 	Node* node = curNode;
 	std::vector<int> path;
@@ -175,19 +176,22 @@ unsigned int Pathfinder::OutputPath(int* pOutBuffer, Node* curNode, const unsign
 
 	while (node != nullptr)
 	{
-		path.push_back(Util::PointToIndex(node->GetCoordinates(), nMapWidth));
+		if (node->GetCoordinates() != startNode->GetCoordinates())
+			path.push_back(Util::PointToIndex(node->GetCoordinates(), nMapWidth));
+
 		node = node->GetParent();
 	}
 
 	// Make sure that the path is shorter than or equal to the buffer length
-	assert(path.size() <= (size_t)nOutBufferSize);
+	assert(path.size() <= (unsigned int)nOutBufferSize);
 
 	// Output path to the buffer in reverse order (and skip starting point)
-	for (unsigned int i = 0; i < path.size() - 1; ++i)
+	for (unsigned int i = 0; i < path.size(); ++i)
 	{
-		pOutBuffer[i] = path[(path.size() - 2) - i];
+		pOutBuffer[i] = path[(path.size() - 1) - i];
 		numNodesAdded++;
 	}
+
 
 	return numNodesAdded;
 }

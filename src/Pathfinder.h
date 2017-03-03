@@ -1,8 +1,14 @@
-#pragma once
+#ifndef PATHFINDER_H_
+#define PATHFINDER_H_
+
 #include <list>
 #include <vector>
+#include <stdlib.h>
 #include "Util.h"
 #include "Node.h"
+
+int FindPath(int nStartX, int nStartY, int nTargetX, int nTargetY,
+	unsigned char const* pMap, int nMapWidth, int nMapHeight, int* pOutBuffer, int nOutBufferSize);
 
 class Pathfinder
 {
@@ -10,19 +16,15 @@ public:
 	Pathfinder();
 	~Pathfinder();
 
-	int FindPath(const int nStartX, const int nStartY,
-		const int nTargetX, const int nTargetY,
-		const unsigned char* pMap, const int nMapWidth, const int nMapHeight,
-		int* pOutBuffer, const int nOutBufferSize);
+	static Node* FindNodeOnList(std::list<Node*>& nodeList, Util::Point point);
 
-	Node* FindNodeOnList(std::list<Node*>& nodeList, Util::Point point);
+	static unsigned int CalcTotalCost(int g);
 
-	unsigned int CalcTotalCost(int g);
+	static unsigned int ManhattanDistance(Util::Point src, Util::Point target);
 
-	unsigned int ManhattanDistance(Util::Point src, Util::Point target);
+	static Util::Point CalcDelta(Util::Point src, Util::Point target);
 
-	Util::Point CalcDelta(Util::Point src, Util::Point target);
-
-	unsigned int OutputPath(int* pOutBuffer, Node* curNode, const unsigned char* pMap, const int nMapWidth, const int nOutBufferSize);
+	static int OutputPath(int* pOutBuffer, Node* curNode, Node* startNode, const unsigned char* pMap, const int nMapWidth, const int nOutBufferSize);
 };
 
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NODE_H_
+#define NODE_H_
 
 #include "Util.h"
 
@@ -39,3 +40,5 @@ private:
 	bool closed;
 	unsigned int g, h, f;
 };
+
+#endif

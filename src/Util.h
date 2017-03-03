@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UTIL_H_
+#define UTIL_H_
 
 #include <assert.h>
 
@@ -34,11 +35,18 @@ public:
 			return (this->x == point.x && this->y == point.y);
 		}
 
+		bool operator!=(const Point& point)
+		{
+			return (this->x != point.x || this->y != point.y);
+		}
+
 		int x, y;
 	};
 
 	static unsigned int CoordinatesToIndex(unsigned int x, unsigned int y, unsigned int width);
 	static unsigned int PointToIndex(Point point, unsigned int width);
 
-	static bool VerifyArray(const int arr[], const int arrVerifier[]);
+	static bool VerifyArray(const int* arr, const int* arrVerifier, const unsigned int arrSize);
 };
+
+#endif
