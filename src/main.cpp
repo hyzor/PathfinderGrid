@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	const int bufferSize2 = 12;
 	const int bufferSize3 = 12;
 
-	bool useThreads = false;
+	bool useThreads = true;
 
 	std::cout << "Executing first example..." << std::endl;
 
@@ -29,18 +29,18 @@ int main(int argc, char** argv)
 	const unsigned char pMap[] = {	1, 1, 1, 1,
 									0, 1, 0, 1,
 									0, 1, 1, 1 };
-	int pOutBuffer[bufferSize];
+	int pOutBuffer[bufferSize] = { 0 };
 	int output = -1;
 
 	const unsigned char pMap2[] = { 1, 1, 1,
 		0, 0, 1,
 		0, 1, 1 };
-	int pOutBuffer2[bufferSize2];
+	int pOutBuffer2[bufferSize2] = { 0 };
 
 	const unsigned char pMap3[] = { 0, 0, 1,
 		0, 1, 1,
 		1, 0, 1 };
-	int pOutBuffer3[bufferSize3];
+	int pOutBuffer3[bufferSize3] = { 0 };
 
 	if (useThreads)
 	{
@@ -57,21 +57,21 @@ int main(int argc, char** argv)
 			std::cout << pOutBuffer[i] << ", ";
 		}
 
-		std::cout << std::endl;
+		std::cout << std::endl << std::endl;
 
 		for (int i = 0; i < bufferSize2; ++i)
 		{
 			std::cout << pOutBuffer2[i] << ", ";
 		}
 
-		std::cout << std::endl;
+		std::cout << std::endl << std::endl;
 
 		for (int i = 0; i < bufferSize3; ++i)
 		{
 			std::cout << pOutBuffer3[i] << ", ";
 		}
 
-		std::cout << std::endl;
+		std::cout << std::endl << std::endl;
 	}
 	else
 	{
